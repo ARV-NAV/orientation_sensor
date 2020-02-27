@@ -2,8 +2,7 @@
 
     Module to read binary data outputted from the IMU and convert it to a usable python object
     Uses a predefined MatLab parser to parse through the binary data.
-    The parsed data is converted into a dict containing all of the IMU data.
-"""
+    The parsed data is converted into a dict containing all of the IMU data."""
 
 # ================ Built-in Imports ================ #
 
@@ -28,6 +27,7 @@ def get_last_orientation() -> dict:
     """Get Last Orientation
         Grabs the last set of binary values from the binary file.
         Opens and reads the file through MatLab itself to then send it through the parser
+        Documentation of the DsFileReader: https://www.mathworks.com/help/matlab/ref/matlab.io.datastore.dsfilereader-class.html
 
     @return: dict: data containing the orientations
     """
