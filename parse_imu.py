@@ -7,6 +7,7 @@
 # ================ Built-in Imports ================ #
 
 from time import time
+import pprint
 
 # ================ Third Party Imports ================ #
 
@@ -21,6 +22,8 @@ __contributors__ = ["Chris Patenaude", "Gabriel Michael", "Gregory Sanchez"]
 
 eng = m_engine.start_matlab()
 filename = "sample_raw_data.bin"
+pageSize = 1000
+pp = pprint.PrettyPrinter(indent=2)
 
 
 def get_last_orientation() -> dict:
@@ -31,12 +34,8 @@ def get_last_orientation() -> dict:
 
     @return: dict: data containing the orientations
     """
-    fp = eng.matlab.io.datastore.DsFileReader(filename)
-    eng.seek(fp, -1000, 'Origin', 'end-of-file')  # This is supposed to set the file pointer to the end of the file. it works on matlab, but not here
-    ml_bin_arr = eng.read(fp, 1000)
-
     start_time = time()
-    orientation = eng.parse_imu(ml_bin_arr)
+    orientation = eng.parse_imu(filename)
     print("Parse time {0}s".format(time() - start_time))
 
     return orientation
@@ -44,4 +43,4 @@ def get_last_orientation() -> dict:
 
 if __name__ == "__main__":
     data = get_last_orientation()
-    print(data)
+    pp.pprint(data)
