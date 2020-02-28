@@ -39,17 +39,17 @@ def get_last_orientation():
     orientation = eng.parse_imu(filename)
     print("Parse time {0}s".format(time() - start_time))
 
-    return orientation
-
-
-if __name__ == "__main__":
-    data = get_last_orientation()
-    #pp.pprint(data)
-
     test_dict = {'heading':np.asarray(data['attitude']['heading_update_source_state']['heading']),
                  'pitch':np.asarray(data['attitude']['orientation_euler_angles']['pitch']),
                  'roll':np.asarray(data['attitude']['orientation_euler_angles']['roll']),
                  'yaw':np.asarray(data['attitude']['orientation_euler_angles']['yaw'])
 
     }
+    return test_dict
+
+
+if __name__ == "__main__":
+    data = get_last_orientation()
+    #pp.pprint(data)
+
     pp.pprint(test_dict)
