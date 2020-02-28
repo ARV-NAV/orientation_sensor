@@ -1,48 +1,46 @@
-import datetime
+"""Python wrapper to parse the IMU binary data
 
+    Module to read binary data outputted from the IMU and convert it to a usable python object
+    Uses a predefined MatLab parser to parse through the binary data.
+    The parsed data is converted into a dict containing all of the IMU data."""
+
+# ================ Built-in Imports ================ #
+
+from time import time
+import pprint
+
+# ================ Third Party Imports ================ #
+
+import matlab.engine as m_engine
+
+# ================ Authorship ================ #
+
+__author__ = "Chris Patenaude"
+__contributors__ = ["Chris Patenaude", "Gabriel Michael", "Gregory Sanchez"]
+
+# ================ Global Variables ================ #
+
+eng = m_engine.start_matlab()
 filename = "sample_raw_data.bin"
-
-# Packet data structure
-class Packet():
-    def __init__(self, descriptor, payload):
-        self.descriptor = descriptor
-        self.payload = payload
+pageSize = 1000
+pp = pprint.PrettyPrinter(indent=2)
 
 
-# Retrieves a list of packets from binary data
-def findPackets(data):
-    packetList = []
-    for i in range(len(data)):
-        if data[i] == 0x75 and data[i+1] == 0x65:
-            packetDescriptor = data[i+2]
-            payloadLength = data[i+3]
-            payloadStart = i+4
-            payloadEnd = payloadStart + payloadLength
+def get_last_orientation() -> dict:
+    """Get Last Orientation
+        Grabs the last set of binary values from the binary file.
+        Opens and reads the file through MatLab itself to then send it through the parser
+        Documentation of the DsFileReader: https://www.mathworks.com/help/matlab/ref/matlab.io.datastore.dsfilereader-class.html
 
-            # print("Packet found - Header:",
-            #       str(hex(data[i])),
-            #       str(hex(data[i+1])),
-            #       str(hex(data[i+2])),
-            #       str(hex(data[i+3])))
+    @return: dict: data containing the orientations
+    """
+    start_time = time()
+    orientation = eng.parse_imu(filename)
+    print("Parse time {0}s".format(time() - start_time))
 
-            newPacket = Packet(
-                packetDescriptor,
-                data[payloadStart:payloadEnd]
-            )
-            packetList.append(newPacket)
-    return packetList
+    return orientation
 
 
-# Open raw data file
-with open(filename, mode='rb') as file:
-    fileContent = file.read()
-
-
-    t1 = datetime.datetime.now().time()
-    testList = findPackets(fileContent)
-    t2 = datetime.datetime.now().time()
-    print("Packets found:", str(len(testList)))
-    print("parsing time (ms):", str(t2.second-t1.second))
-
-    # for item in testList:
-    #     print(len(item.payload))
+if __name__ == "__main__":
+    data = get_last_orientation()
+    pp.pprint(data)
