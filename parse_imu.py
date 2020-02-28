@@ -46,7 +46,6 @@ if __name__ == "__main__":
     data = get_last_orientation()
     #pp.pprint(data)
 
-    print(type(np.asarray(data['attitude']['heading_update_source_state']['heading'])))
     test_dict = {'heading':np.asarray(data['attitude']['heading_update_source_state']['heading']),
                  'pitch':np.asarray(data['attitude']['orientation_euler_angles']['pitch']),
                  'roll':np.asarray(data['attitude']['orientation_euler_angles']['roll']),
