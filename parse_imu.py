@@ -52,4 +52,4 @@ if __name__ == "__main__":
     data = get_last_orientation()
     #pp.pprint(data)
 
-    pp.pprint(test_dict)
+    pp.pprint(data)
