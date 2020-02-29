@@ -79,7 +79,7 @@ def get_last_valid_orientation(orientation_data: dict) -> dict:
     """
     i = 0
     while (i < 10):
-        if(orientation_data['valid_heading'][0][10 - i] == 1 and orientation_data['valid_orientation'][0][10 - i] == 1):
+        if(orientation_data['valid_heading'][0][9 - i] == 1 and orientation_data['valid_orientation'][0][9 - i] == 1):
             valid_data = {'heading':np.asarray(orientation_data['heading'][0][i]),
                           'pitch':np.asarray(orientation_data['pitch'][0][i]),
                           'roll':np.asarray(orientation_data['roll'][0][i]),
