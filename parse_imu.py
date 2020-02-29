@@ -24,6 +24,7 @@ __contributors__ = ["Chris Patenaude", "Gabriel Michael", "Gregory Sanchez"]
 pp = pprint.PrettyPrinter(indent = 2)
 eng = m_engine.start_matlab()
 filename = "sample_raw_data.bin"
+timestamped_file = "IMU_timestamped_test_data.bin"
 
 
 def get_last_orientation():
@@ -57,7 +58,7 @@ def get_last_orientation():
                                                          'valid': '1=valid, 0=invalid',
                                                          'yaw': 'radians'}}}}
      """
-    orientation = eng.parse_imu(filename)
+    orientation = eng.parse_imu(timestamped_file)
     print("Parse time {0}s".format(time() - start_time))
 
     test_dict = {'heading':np.asarray(orientation['attitude']['heading_update_source_state']['heading']),
