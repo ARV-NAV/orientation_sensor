@@ -37,7 +37,7 @@ def get_last_orientation():
     # print(eng.seek(fp, 100, 'RespectTextEncoding', True, 'end-of-file', True))
 
     start_time = time()
-     """Keys of the orientation ditc
+    """Keys of the orientation ditc
      'units': { 'attitude': { 'compensated_angular_rate': { 'X': 'rads/sec',
                                                          'Y': 'rads/sec',
                                                          'Z': 'rads/sec',
@@ -57,7 +57,7 @@ def get_last_orientation():
                                                          'roll': 'radians',
                                                          'valid': '1=valid, 0=invalid',
                                                          'yaw': 'radians'}}}}
-     """
+    """
     orientation = eng.parse_imu(timestamped_file)
     print("Parse time {0}s".format(time() - start_time))
 
@@ -66,7 +66,8 @@ def get_last_orientation():
                  'roll':np.asarray(orientation['attitude']['orientation_euler_angles']['roll']),
                  'yaw':np.asarray(orientation['attitude']['orientation_euler_angles']['yaw']),
                  'valid_heading':np.asarray(orientation['attitude']['orientation_euler_angles']['valid']),
-                 'valid_orientation':np.asarray(orientation['attitude']['orientation_euler_angles']['valid'])
+                 'valid_orientation':np.asarray(orientation['attitude']['orientation_euler_angles']['valid'],
+                 'nuc_time':np.asarray(orientation['attitude']['nuc_time'])
     }
     return test_dict
 
@@ -74,3 +75,4 @@ def get_last_orientation():
 if __name__ == "__main__":
     data = get_last_orientation()
     pp.pprint(data)
+
