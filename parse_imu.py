@@ -27,7 +27,7 @@ filename = "sample_raw_data.bin"
 timestamped_file = "IMU_timestamped_test_data.bin"
 
 
-def get_last_orientation():
+def get_last_orientation() -> dict:
     """Get Last Orientation
         Grabs the last set of binary values from the binary file.
         Opens and reads the file through MatLab itself to then send it through the parser
@@ -72,9 +72,26 @@ def get_last_orientation():
     return test_dict
 
 
+def get_last_valid_orientation(orientation_data: dict) -> dict:
+    i = 0
+    while (i < 9):
+        if(orientation_data['valid_heading'][0][9 - i] == 1 and orientation_data['valid_orientation'][0][9 - i] == 1):
+            valid_data = {'heading':np.asarray(orientation_data['heading'][0][i]),
+                          'pitch':np.asarray(orientation_data['pitch'][0][i]),
+                          'roll':np.asarray(orientation_data['roll'][0][i]),
+                          'yaw':np.asarray(orientation_data['yaw'][0][i]),
+                          'nuc_time':np.asarray(orientation_data['nuc_time'][0][i]) }
+            return valid_data
+        else:
+            i+=1
+
+
+
+
 if __name__ == "__main__":
     data = get_last_orientation()
-    pp.pprint(data)
+    #pp.pprint(data)
 
+    valid = get_last_valid_orientation(data)
 
-
+    pp.pprint(valid)
